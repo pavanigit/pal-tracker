@@ -6,14 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
     private Map<Long,TimeEntry> myInmemoryRepo = new HashMap<Long,TimeEntry>();
+    private AtomicInteger timeEntryId= new AtomicInteger(0) ;
 
     @Override
     public TimeEntry create(TimeEntry timeEntry) {
-        long nextId = myInmemoryRepo.size()+1;
+        long nextId = this.timeEntryId.incrementAndGet();
         TimeEntry repoEntry = new TimeEntry(nextId,timeEntry.getProjectId(),timeEntry.getUserId(),timeEntry.getDate(),timeEntry.getHours());
         myInmemoryRepo.put(nextId,repoEntry);
         return repoEntry;
@@ -44,6 +46,8 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
     @Override
     public void delete(long id) {
-
+        if(myInmemoryRepo!=null && myInmemoryRepo.get(id)!=null) {
+           myInmemoryRepo.remove(id);
+        }
     }
 }
