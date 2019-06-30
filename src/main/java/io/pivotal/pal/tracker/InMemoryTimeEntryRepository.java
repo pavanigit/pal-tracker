@@ -22,7 +22,7 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     @Override
-    public TimeEntry find(long id) {
+    public TimeEntry find(Long id) {
         if(myInmemoryRepo!=null&& !myInmemoryRepo.isEmpty()&&myInmemoryRepo.containsKey(id))
             return myInmemoryRepo.get(id);
         else

@@ -2,7 +2,7 @@ package test.pivotal.pal.tracker;
 
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import io.pivotal.pal.tracker.JdbcTimeEntryRepository;
+import io.pivotal.pal.tracker.JDBCTimeEntryRepository;
 import io.pivotal.pal.tracker.TimeEntry;
 import io.pivotal.pal.tracker.TimeEntryRepository;
 import org.junit.Before;
@@ -26,7 +26,7 @@ public class JdbcTimeEntryRepositoryTest {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
 
-        subject = new JdbcTimeEntryRepository(dataSource);
+        subject = new JDBCTimeEntryRepository(dataSource);
 
         jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("DELETE FROM time_entries");

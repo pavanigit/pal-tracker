@@ -1,3 +1,5 @@
+import org.flywaydb.gradle.task.FlywayMigrateTask
+
 buildscript {
     ext {
         springBootVersion = "2.0.6.RELEASE"
@@ -15,6 +17,8 @@ buildscript {
 
 plugins {
     id "java"
+    id "org.flywaydb.flyway" version "5.0.5"
+
 }
 
 apply plugin: 'org.springframework.boot'
@@ -28,13 +32,28 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7")
     testCompile("org.mockito:mockito-core:2.23.4")
+    compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
+    compile("mysql:mysql-connector-java:8.0.16")
     
 }
 
 bootRun.environment([
         "WELCOME_MESSAGE": "hello",
+        "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
 ])
 
 test.environment([
         "WELCOME_MESSAGE": "Hello from test",
+        "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
 ])
+
+flyway {
+    url = "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+    user = "tracker"
+    password = ""
+    locations = ["filesystem:database/tracker/migrations"]
+}
+
+task testMigrate(type: FlywayMigrateTask) {
+    url = "jdbc:mysql://localhost:3306/tracker_test?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"
+}
