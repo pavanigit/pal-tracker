@@ -6,10 +6,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 
@@ -36,5 +39,17 @@ public class PalTrackerApplication {
                 .modules(new JavaTimeModule())
                 .build();
     }
+    @Bean
+    RestOperations restOperations() {
+        return new RestTemplate();
+            }
+    @Bean
+    ProjectClient projectClient(
 
+            RestOperations restOperations,
+            @Value("${users.server.endpoint}") String registrationEndpoint
+    ) {
+        return new ProjectClient(registrationEndpoint,restOperations);
+
+    }
 }

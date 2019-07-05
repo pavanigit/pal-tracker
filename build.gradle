@@ -40,6 +40,7 @@ dependencies {
 bootRun.environment([
         "WELCOME_MESSAGE": "hello",
         "SPRING_DATASOURCE_URL": "jdbc:mysql://localhost:3306/tracker_dev?user=tracker&useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false",
+        "USERS_SERVER_ENDPOINT": "http://localhost:8083",
 ])
 
 test.environment([
